@@ -1,0 +1,744 @@
+/* =========================================================
+   activities.css
+   استایل کامل صفحه "مدیریت فعالیت‌ها"
+   ========================================================= */
+
+/* ------------------------------
+   ریشه و متغیرهای رنگ و فونت
+   ------------------------------ */
+:root {
+  --bg: #fbfbfd;
+  --card-bg: #ffffff;
+  --muted: #6c757d;
+  --accent: #6f42c1;       /* بنفش ملایم */
+  --accent-dark: #4b0082;  /* بنفش پررنگ */
+  --danger: #dc3545;
+  --surface-shadow: 0 6px 18px rgba(99,66,155,0.08);
+  --soft-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --gap: 14px;
+  --font-family: "Shabnam", "Vazir", sans-serif;
+}
+
+/* ------------------------------
+   پایه صفحه و پس‌زمینه
+   ------------------------------ */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  color: #222;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: linear-gradient(135deg, #e1f6f9, #f5ebee, #f0f9fa);
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ------------------------------
+   منوی فانتزی وسط‌چین ثابت بالا
+   ------------------------------ */
+.custom-menu {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 90%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(13, 13, 14, 0.1);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.custom-menu .nav-link {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 6px 14px;
+  color: var(--accent);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.custom-menu .nav-link:hover {
+  background-color: #e9e4f0;
+  border-color: #d0c1e6;
+  color: #5a379e;
+}
+
+.custom-menu .nav-link.active {
+  background-color: var(--accent);
+  color: #fff;
+  border-color: #5a379e;
+}
+
+/* ------------------------------
+   کانتینر کلی محتوا
+   ------------------------------ */
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+body {
+  padding-top: 70px; /* فاصله از منوی ثابت */
+}
+
+/* ------------------------------
+   باکس کنترل (ایجاد/حذف + جستجو)
+   ------------------------------ */
+.control-box {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--soft-shadow);
+  margin-top: 80px;
+  border: 1px solid #e0e0e0;
+}
+
+.control-box input {
+  flex: 1;
+}
+
+.control-box button.btn-outline-primary {
+  white-space: nowrap;
+}
+
+/* ------------------------------
+   باکس گروه‌ها
+   ------------------------------ */
+.group-box {
+  display: flex;
+  flex-direction: row-reverse; /* دکمه‌ها در راست، اطلاعات در چپ */
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--soft-shadow);
+  transition: transform 0.2s ease;
+  padding: 12px;
+}
+
+.group-box:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--surface-shadow);
+}
+
+/* آیکون گروه */
+.group-icon {
+  font-size: 1.5rem;
+}
+
+/* رنگ آیکون‌ها */
+.suggested-group .group-icon { color: #f4c430; } /* زرد */
+.user-group .group-icon { color: #0d6efd; }      /* آبی بوت‌استرپ */
+
+/* ------------------------------
+   بخش دکمه‌های هر گروه (سمت راست)
+   ------------------------------ */
+.group-actions {
+  order: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.group-actions .btn {
+  min-width: 90px;
+  font-size: 0.9rem;
+  padding: 4px 10px;
+}
+
+/* ------------------------------
+   بخش اطلاعات گروه (سمت چپ)
+   ------------------------------ */
+.group-info {
+  order: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ------------------------------
+   فعالیت‌های زیرمجموعه (فعلاً مخفی)
+   ------------------------------ */
+.activities {
+  display: none;
+}
+
+
+/* پنجره نیمه‌شفاف وسط صفحه */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* محتوای داخل پنجره */
+.modal-content {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--surface-shadow);
+  width: 500px;
+  max-width: 90%;
+}
+
+/* لیست فعالیت‌ها عمودی */
+.activity-list-vertical {
+  display: flex;
+  flex-direction: column; /* عمودی */
+  gap: 12px;
+}
+
+/* باکس فعالیت */
+.activity-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.activity-box:hover {
+  background: #e2e6ea;
+}
+
+.activity-box.selected {
+  border-color: var(--accent);
+  background: #ede7f6;
+}
+
+/* آیکون فعالیت (از دیتابیس لینک می‌گیرد) */
+.activity-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* اسکرول‌بار عمودی برای لیست فعالیت‌ها */
+.activity-list-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;   /* ارتفاع ثابت برای لیست */
+  overflow-y: auto;    /* فعال‌سازی اسکرول عمودی */
+  padding-right: 6px;  /* فاصله برای اسکرول‌بار */
+}
+
+/* استایل اسکرول‌بار (فقط در مرورگرهای WebKit مثل Chrome/Edge) */
+.activity-list-vertical::-webkit-scrollbar {
+  width: 8px; /* ضخامت اسکرول‌بار */
+}
+
+.activity-list-vertical::-webkit-scrollbar-track {
+  background: #f0f0f0; /* زمینه مسیر اسکرول */
+  border-radius: 10px;
+}
+
+.activity-list-vertical::-webkit-scrollbar-thumb {
+  background: var(--accent); /* رنگ بنفش ملایم */
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.activity-list-vertical::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark); /* رنگ بنفش پررنگ هنگام hover */
+}
+
+
+
+/* پنجره ایجاد فعالیت  */
+/* پنجره ایجاد فعالیت  */
+/* پنجره ایجاد فعالیت  */
+/* پنجره ایجاد فعالیت جدید */
+#newActivityModal .modal-content {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--surface-shadow);
+  width: 500px;
+  max-width: 90%;
+}
+
+/* عنوان صفحه ایجاد فعالیت */
+.edit-title {
+  font-size: 22px;
+  color: var(--accent); /* همان رنگ بنفش ملایم */
+  text-align: center;
+  margin-bottom: 24px;
+  font-weight: bold;
+}
+
+/* ردیف‌ها و باکس‌ها */
+.activity-settings .edit-row {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.activity-settings .edit-box {
+  width: 100%;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.activity-settings .edit-box label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ورودی نام فعالیت */
+#createActivity_activityName {
+  width: 100%;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+}
+
+/* آیکون فعالیت */
+.activity-settings .activity-icon {
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.activity-settings .activity-icon:hover {
+  border-color: var(--accent);
+}
+
+/* -------------------------------
+   اولویت‌ها — هماهنگ با صفحه جدید
+------------------------------- */
+.activity-settings .priority-circles {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+
+.activity-settings .priority-circles .circle {
+  min-width: 90px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: #e0e0e0;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+/* حالت انتخاب‌شده */
+.circle.selected.minimal  { background: #064f99; color: #fff; }
+.circle.selected.low      { background: #22b6b6; color: #fff; }
+.circle.selected.medium   { background: #38fd02; color: #fff; }
+.circle.selected.high     { background: #f3e701; color: #fff; }
+.circle.selected.highest  { background: #fb052e; color: #fff; }
+
+/* واکنش‌گرایی برای موبایل */
+@media (max-width: 576px) {
+  .activity-settings .edit-box {
+    padding: 12px;
+  }
+  .activity-settings .activity-icon {
+    width: 48px;
+    height: 48px;
+  }
+  .activity-settings .priority-circles .circle {
+    min-width: 70px;
+    font-size: 0.8rem;
+  }
+}
+
+/* فیلدهای زمان اختصاصی */
+#createActivity_timeFields input[type="time"] {
+  max-width: 160px;
+}
+
+/* دکمه‌های پایین صفحه */
+.edit-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* دکمه‌ها */
+.edit-actions .btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.edit-actions .btn-success {
+  background-color: #28a745;
+  border: 2px solid #28a745;
+  color: #fff;
+}
+
+.edit-actions .btn-outline-secondary {
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  background: transparent;
+}
+
+.edit-actions .btn-outline-danger {
+  border: 2px solid #dc3545;
+  color: #dc3545;
+  background: transparent;
+}
+
+.edit-actions .btn:hover {
+  opacity: 0.9;
+}
+
+/* پنجره گالری آیکون */
+#createActivity_iconGalleryModal.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+#createActivity_iconGalleryModal.open {
+  display: flex !important;
+}
+
+/* محتوای داخل پنجره */
+.icon-gallery-modal {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--surface-shadow);
+  width: 480px;
+  max-width: 90%;
+}
+
+/* عنوان گالری */
+.icon-gallery-modal .edit-title {
+  font-size: 20px;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+/* لیست آیکون‌ها */
+.icon-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+/* آیکون‌ها */
+.icon-gallery img {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.icon-gallery img:hover {
+  border-color: var(--accent);
+}
+
+.icon-gallery img.selected {
+  border-color: var(--accent-dark);
+}
+
+/* دکمه‌ها */
+.edit-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+
+
+/* ثابت نگه‌داشتن اندازه پنجره و اسکرول داخلی محتوا */
+#newActivityModal .modal-content {
+  width: 500px;
+  max-width: 90%;
+  max-height: 80vh;          /* ارتفاع منطقی نسبت به viewport */
+  display: flex;
+  flex-direction: column;
+}
+
+/* نوار عنوان ثابت؛ اسکرول فقط روی تنظیمات */
+#newActivityModal .edit-title {
+  margin-bottom: 16px;
+  flex: 0 0 auto;            /* جلوگیری از اسکرول شدن عنوان */
+}
+
+/* ناحیه قابل اسکرول محتوا */
+#newActivityModal .activity-settings {
+  flex: 1 1 auto;
+  overflow-y: auto;           /* اسکرول عمودی محتوا */
+  padding-right: 6px;         /* فاصله برای اسکرول‌بار */
+}
+
+/* دکمه‌ها ثابت در پایین؛ بیرون از اسکرول */
+#newActivityModal .edit-actions {
+  flex: 0 0 auto;
+  margin-top: 16px;
+}
+
+/* زیباسازی اسکرول‌بار (WebKit: Chrome/Edge) برای همین پنجره */
+#newActivityModal .activity-settings::-webkit-scrollbar {
+  width: 8px;
+}
+
+#newActivityModal .activity-settings::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+#newActivityModal .activity-settings::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+#newActivityModal .activity-settings::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}
+
+/* پشتیبانی ساده برای Firefox */
+#newActivityModal .activity-settings {
+  scrollbar-width: thin;           /* باریک */
+  scrollbar-color: var(--accent) #f0f0f0;  /* رنگ شست و ترک */
+}
+
+/* دکمه بستن (قرمز) */
+.btn-outline-danger {
+  border: 2px solid #dc3545;
+  color: #dc3545;
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline-danger:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* دکمه بازگشت (خاکستری) */
+.btn-outline-secondary {
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+  background: #6c757d;
+  color: #fff;
+}
+
+
+
+/* پنجره ویرایش گروه */
+.edit-group-modal {
+  width: 600px;
+  max-width: 95%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--surface-shadow);
+}
+
+
+
+/* لیست فعالیت‌ها با اسکرول */
+#editGroup_activityList {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+#editGroup_activityList::-webkit-scrollbar {
+  width: 8px;
+}
+#editGroup_activityList::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+#editGroup_activityList::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+#editGroup_activityList::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}
+
+
+/* دکمه ویرایش */
+.group-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f5f7ff;
+  color: #3b4cca;
+  border: 1px solid #cdd6f8;
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.group-edit-btn:hover {
+  background-color: #e0e7ff;
+  color: #2a3bb8;
+}
+
+.edit-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.edit-group-modal {
+  width: 600px;
+  max-width: 95%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--surface-shadow);
+  overflow: hidden; /* جلوگیری از اسکرول بیرونی */
+}
+
+/* محتوای قابل اسکرول */
+.edit-group-scrollable {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/*  فرم ویرایش دکمه‌ها همیشه پایین */
+.edit-actions {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+/* ظاهر کلی پنجره ایجاد گروه */
+.create-group-modal {
+  width: 500px;
+  max-width: 90%;
+  max-height: 80vh;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--surface-shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+/* عنوان پنجره */
+.modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* بخش قابل اسکرول برای فیلدها */
+.modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* دکمه‌های پایین پنجره */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* ظاهر دکمه‌ها */
+.modal-actions .btn {
+  padding: 8px 16px;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+/* اسکرول‌بار فانتزی */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}

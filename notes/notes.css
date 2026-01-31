@@ -1,0 +1,275 @@
+/* notes.css - بخش اول */
+
+/* ریشه و متغیرها */
+:root {
+  --bg: #fbfbfd;
+  --card-bg: #ffffff;
+  --muted: #6c757d;
+  --accent: #6f42c1;
+  --accent-dark: #4b0082;
+  --danger: #dc3545;
+  --surface-shadow: 0 6px 18px rgba(99,66,155,0.08);
+  --soft-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --gap: 14px;
+  --font-family: "Shabnam", "Vazir", sans-serif;
+}
+
+/* پایه صفحه با گرادیان متحرک و رنگ‌های لطیف */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  color: #222;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #e1f6f9, #f5ebee, #f0f9fa);
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* منوی فانتزی وسط‌چین و ثابت در بالا */
+.custom-menu {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 90%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(13, 13, 14, 0.1);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.custom-menu .nav-link {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 6px 14px;
+  color: var(--accent);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.custom-menu .nav-link:hover {
+  background-color: #e9e4f0;
+  border-color: #d0c1e6;
+  color: #5a379e;
+}
+
+.custom-menu .nav-link.active {
+  background-color: var(--accent);
+  color: #fff;
+  border-color: #5a379e;
+}
+
+/* کانتینر کلی */
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* فاصله محتوا از منوی ثابت */
+body {
+  padding-top: 70px;
+}
+
+/* کنترل‌های بالای صفحه */
+.notes-toolbar {
+  background: linear-gradient(135deg, #e1f6f9, #f5ebff);
+  background-size: 200% 200%;
+  animation: gradientShift 16s ease infinite;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--surface-shadow);
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+}
+
+.notes-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.notes-controls .btn {
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  min-width: 160px;
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  transition: 0.2s;
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-dark);
+}
+
+#searchNotes {
+  min-width: 240px;
+  max-width: 400px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--soft-shadow);
+  flex-grow: 1;
+}
+
+/* کارت یادداشت‌ها */
+.note-card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--soft-shadow);
+  min-height: 120px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--surface-shadow);
+}
+
+.note-card h5 {
+  margin-bottom: 8px;
+}
+
+.note-card p {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.note-card small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.notes-list .note-card {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--soft-shadow);
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: box-shadow 0.2s ease;
+}
+
+.notes-list .note-card:hover {
+  box-shadow: var(--surface-shadow);
+}
+
+/* دکمه ویرایش داخل کارت */
+.edit-note {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.edit-note:hover {
+  color: var(--accent-dark);
+}
+
+/* notes.css - بخش دوم */
+
+/* سکشن شناور تمام‌صفحه */
+.create-note-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  padding: 2rem;
+}
+
+/* باکس سفید وسط‌چین */
+.create-note-box {
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow: hidden;
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 1;
+}
+
+/* ناحیه اسکرول متن داخل باکس */
+.note-scroll-area {
+  max-height: 50vh;
+  overflow-y: auto;
+  direction: rtl; /* مناسب فارسی */
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  scroll-behavior: smooth;
+}
+
+/* اسکرول‌بار فانتزی */
+.note-scroll-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.note-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.note-scroll-area::-webkit-scrollbar-thumb {
+  background-color: var(--note-scroll-color, #999); /* رنگ قابل تنظیم از JS */
+  border-radius: 4px;
+  border: 1px solid #fff;
+}
+
+.note-scroll-area {
+  scrollbar-color: var(--note-scroll-color, #999) transparent;
+  scrollbar-width: thin;
+}
+
+/* افکت هاله رنگی اطراف باکس نمایش یادداشت */
+.create-note-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--note-halo-color, #d4edda); /* رنگ یادداشت */
+  opacity: 0.3; /* شفافیت هاله */
+  filter: blur(40px); /* محو شدن برای حالت هاله‌ای */
+  z-index: 0;
+}
+
+/* اسکرول‌بار فانتزی */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}

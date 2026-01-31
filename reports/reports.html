@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <!-- Bootstrap RTL -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- فونت شبنم -->
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css" rel="stylesheet">
+
+  <!-- استایل اختصاصی -->
+  <link rel="stylesheet" href="reports.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- اسکریپت اختصاصی -->
+  <script src="reports.js" defer></script>
+
+  <title>آمار و گزارش </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css" rel="stylesheet">
+  <link rel="stylesheet" href="reports.css">
+  <script src="reports.js" defer></script>
+</head>
+<body class="container">
+
+  <!-- منوی فانتزی وسط‌چین -->
+  <nav class="navbar navbar-expand-lg mb-4">
+    <div class="container-fluid">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 custom-menu">
+        <li class="nav-item"><a class="nav-link" href="../profile/profile.html">پروفایل</a></li>
+        <li class="nav-item"><a class="nav-link" href="../timeline/timeline.html">زمان‌نگار من</a></li>
+        <li class="nav-item"><a class="nav-link" href="../activities/activities.html">مدیریت فعالیت‌ها</a></li>
+        <li class="nav-item"><a class="nav-link active" href="reports.html">آمار و گزارش</a></li>
+        <li class="nav-item"><a class="nav-link" href="../notes/notes.html">یادداشت‌ها</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- محتوای اصلی -->
+  <main>
+
+ <!-- تاریخ -->
+  <div class="date-header d-flex justify-content-center align-items-center gap-3">
+    <button class="btn btn-outline-secondary rounded-circle" onclick="changeDate(-1)">&#x276E;</button>
+    <span id="dateDisplay">امروز، ۱۴۰۴/۰۸/۲۴</span>
+    <button class="btn btn-outline-secondary rounded-circle" onclick="changeDate(1)">&#x276F;</button>
+  </div>
+
+
+
+    <!-- تب‌های انتخاب بازه زمانی -->
+    <ul class="nav nav-tabs mb-4" id="reportTabs">
+      <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#daily">روزانه</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#weekly">هفتگی</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#monthly">ماهانه</a></li>
+    </ul>
+
+    <!-- محتوای تب‌ها -->
+    <div class="tab-content">
+      <!-- روزانه -->
+      <div class="tab-pane fade show active" id="daily">
+        <div class="report-box">
+            <!-- تب‌ها -->
+  <ul class="nav nav-pills mb-3" id="scoreTabs">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#scoreChart">میانگین امتیازها</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="pill" data-bs-target="#completionChart">میانگین تکمیل‌ها</button>
+    </li>
+  </ul>
+
+  <!-- محتوای تب‌ها -->
+  <div class="tab-content">
+    <div class="tab-pane fade show active chart-card" id="scoreChart">
+      <canvas id="scoreBarChart"></canvas>
+    </div>
+    <div class="tab-pane fade chart-card" id="completionChart">
+      <canvas id="completionBarChart"></canvas>
+    </div>
+  </div>
+
+<div class="summary-fancy">
+  <div class="summary-card">
+    <i class="bi bi-star-fill"></i>
+    <div class="text">
+      <span class="label">امتیاز روزانه</span>
+      <span class="value">۹۱٪</span>
+    </div>
+  </div>
+  <div class="summary-card">
+    <i class="bi bi-check-circle-fill"></i>
+    <div class="text">
+      <span class="label">تکمیل روزانه</span>
+      <span class="value">۱۰۰٪</span>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+
+
+      <!-- هفتگی -->
+     <div class="tab-pane fade" id="weekly">
+  <div class="weekly-stats">
+  
+
+    <!-- تب‌ها -->
+    <ul class="nav nav-pills mb-3" id="weeklyTabs">
+      <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#weeklyScoreChart">میانگین امتیازها</button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#weeklyCompletionChart">میانگین تکمیل‌ها</button>
+      </li>
+    </ul>
+
+    <!-- محتوای تب‌ها -->
+    <div class="tab-content">
+      <div class="tab-pane fade show active chart-card" id="weeklyScoreChart">
+        <canvas id="weeklyScores"></canvas>
+      </div>
+      <div class="tab-pane fade chart-card" id="weeklyCompletionChart">
+        <canvas id="weeklyActivities"></canvas>
+      </div>
+    </div>
+
+    <!-- آمار عددی پایین نمودار -->
+    <div class="summary-fancy">
+      <div class="summary-card">
+        <i class="bi bi-star-fill"></i>
+        <div class="text">
+          <span class="label">امتیاز هفتگی</span>
+          <span class="value">۷۰٪</span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <i class="bi bi-check-circle-fill"></i>
+        <div class="text">
+          <span class="label">تکمیل هفتگی</span>
+          <span class="value">۸۵٪</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ماهانه -->
+<div class="tab-pane fade" id="monthly">
+  <div class="monthly-stats">
+
+    <!-- تب‌ها -->
+    <ul class="nav nav-pills mb-3" id="monthlyTabs">
+      <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#monthlyScoreChart">
+          میانگین امتیازها
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#monthlyCompletionChart">
+          میانگین تکمیل‌ها
+        </button>
+      </li>
+    </ul>
+
+    <!-- محتوای تب‌ها -->
+    <div class="tab-content">
+      <!-- نمودار امتیاز ماهانه -->
+      <div class="tab-pane fade show active chart-card" id="monthlyScoreChart">
+        <canvas id="monthlyScores"></canvas>
+      </div>
+
+      <!-- نمودار تکمیل ماهانه -->
+      <div class="tab-pane fade chart-card" id="monthlyCompletionChart">
+        <canvas id="monthlyActivities"></canvas>
+      </div>
+    </div>
+
+    <!-- آمار عددی پایین نمودار -->
+    <div class="summary-fancy">
+      <div class="summary-card">
+        <i class="bi bi-star-fill"></i>
+        <div class="text">
+          <span class="label">امتیاز ماهانه</span>
+          <span class="value">۷۵٪</span>
+        </div>
+      </div>
+      <div class="summary-card">
+        <i class="bi bi-check-circle-fill"></i>
+        <div class="text">
+          <span class="label">تکمیل ماهانه</span>
+          <span class="value">۸۰٪</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+  </main>
+
+<!-- اضافه کردن فایل جاوااسکریپت Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

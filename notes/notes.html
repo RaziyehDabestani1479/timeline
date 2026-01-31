@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>یادداشت‌ها</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css" rel="stylesheet">
+  <link rel="stylesheet" href="notes.css">
+  <script src="notes.js" defer></script>
+</head>
+<body class="container">
+
+  <!-- منوی فانتزی وسط‌چین -->
+  <nav class="navbar navbar-expand-lg mb-4">
+    <div class="container-fluid">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 custom-menu">
+        <li class="nav-item"><a class="nav-link" href="../profile/profile.html">پروفایل</a></li>
+        <li class="nav-item"><a class="nav-link" href="../timeline/timeline.html">زمان‌نگار من</a></li>
+        <li class="nav-item"><a class="nav-link" href="../activities/activities.html">مدیریت فعالیت‌ها</a></li>
+        <li class="nav-item"><a class="nav-link" href="../reports/reports.html">آمار و گزارش</a></li>
+        <li class="nav-item"><a class="nav-link active" href="notes.html">یادداشت‌ها</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- محتوای صفحه یادداشت‌ها -->
+  <main>
+    
+<div class="notes-toolbar mb-4">
+  <div class="notes-controls d-flex flex-wrap align-items-center gap-3">
+    <button class="btn btn-success px-4 py-2">
+      <i class="bi bi-plus-lg"></i> ایجاد یادداشت
+    </button>
+    <button class="btn btn-danger px-4 py-2" id="deleteSelected">
+      <i class="bi bi-trash"></i> حذف انتخاب‌شده‌ها
+    </button>
+    <input type="text" id="searchNotes" class="form-control flex-grow-1" placeholder="جستجو در یادداشت‌ها...">
+  </div>
+</div>
+
+    <!-- لیست یادداشت‌ها -->
+  <section id="notesList" class="notes-list">
+  <!-- کارت‌های یادداشت‌ها اینجا توسط JS رندر می‌شوند -->
+  </section>
+  </main>
+
+  <!-- مودال نمایش کامل یادداشت -->
+  <div class="modal fade" id="noteModal" tabindex="-1">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">تیتر یادداشت</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>متن کامل یادداشت اینجا نمایش داده می‌شود...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- بخش فرم ایجاد یادداشت (ابتدا مخفی) -->
+<!-- فرم ایجاد یادداشت به‌صورت شناور وسط‌چین -->
+<section id="createNoteSection" class="create-note-overlay d-none">
+  <div class="create-note-box p-4 rounded shadow bg-white">
+    <h4 class="mb-3">ایجاد یادداشت جدید</h4>
+
+    <!-- انتخاب رنگ -->
+   <div class="mb-3">
+  <label class="form-label">رنگ یادداشت</label>
+  <select id="noteColor" class="form-select">
+    <option value="1">قرمز</option>
+    <option value="2">آبی</option>
+    <option value="3">سبز</option>
+    <option value="4">زرد</option>
+    <option value="5">خاکستری</option>
+    <option value="6">صورتی روشن</option>
+    <option value="7">سبز نعناعی</option>
+    <option value="8">فیروزه‌ای</option>
+    <option value="9">هلویی</option>
+    <option value="10">بنفش روشن</option>
+    <option value="11">بنفش تیره</option>
+    <option value="12">صورتی بنفش</option>
+    <option value="13">صورتی پاستلی</option>
+    <option value="14">کرم صورتی</option>
+    <option value="15">سبز روشن</option>
+    <option value="16">آبی خاکستری</option>
+    <option value="17">بژ</option>
+    <option value="18">صورتی خاکستری</option>
+    <option value="19">سبز لیمویی</option>
+    <option value="20">یاسی</option>
+  </select>
+</div>
+
+
+
+    <!-- تیتر -->
+    <div class="mb-3">
+      <label class="form-label">تیتر یادداشت</label>
+      <input type="text" id="newNoteTitle" class="form-control" required>
+    </div>
+
+    <!-- متن -->
+    <div class="mb-3">
+      <label class="form-label">متن یادداشت</label>
+      <textarea id="newNoteText" class="form-control" rows="4"></textarea>
+    </div>
+
+    <!-- دکمه‌ها -->
+    <div class="d-flex justify-content-end gap-2">
+      <button id="closeCreateNote" class="btn btn-secondary">بستن</button>
+      <button id="saveCreateNote" class="btn btn-success" disabled>ذخیره</button>
+    </div>
+  </div>
+</section>
+
+<!-- فرم ویرایش یادداشت به‌صورت شناور وسط‌چین -->
+
+<section id="editNoteSection" class="create-note-overlay d-none">
+  <div class="create-note-box p-4 rounded shadow bg-white">
+    <h4 class="mb-3">ویرایش یادداشت</h4>
+
+    <div class="mb-3">
+      <label class="form-label">رنگ یادداشت</label>
+      <select id="editNoteColor" class="form-select">
+        <option value="1">قرمز</option>
+        <option value="2">آبی</option>
+        <option value="3">سبز</option>
+        <option value="4">زرد</option>
+        <option value="5">خاکستری</option>
+        <option value="6">صورتی روشن</option>
+        <option value="7">سبز نعناعی</option>
+        <option value="8">فیروزه‌ای</option>
+        <option value="9">هلویی</option>
+        <option value="10">بنفش روشن</option>
+        <option value="11">بنفش تیره</option>
+        <option value="12">صورتی بنفش</option>
+        <option value="13">صورتی پاستلی</option>
+        <option value="14">کرم صورتی</option>
+        <option value="15">سبز روشن</option>
+        <option value="16">آبی خاکستری</option>
+        <option value="17">بژ</option>
+        <option value="18">صورتی خاکستری</option>
+        <option value="19">سبز لیمویی</option>
+        <option value="20">یاسی</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">تیتر یادداشت</label>
+      <input type="text" id="editNoteTitle" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">متن یادداشت</label>
+      <textarea id="editNoteText" class="form-control" rows="4"></textarea>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+      <button id="closeEditNote" class="btn btn-secondary">بستن</button>
+      <button id="saveEditNote" class="btn btn-success">ثبت تغییرات</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- صفحه نمایش یادداشت به‌صورت شناور وسط‌چین -->
+<!-- صفحه نمایش یادداشت به‌صورت شناور وسط‌چین -->
+<section id="viewNoteSection" class="create-note-overlay d-none">
+  <div id="viewNoteBox" class="create-note-box p-4 rounded shadow">
+    <h4 id="viewNoteTitle" class="mb-3">تیتر یادداشت</h4>
+
+    <!-- محتوای قابل اسکرول -->
+    <div id="viewNoteContent" class="note-scroll-area mb-3">
+      <p id="viewNoteText">متن یادداشت اینجا نمایش داده می‌شود...</p>
+    </div>
+
+    <!-- دکمه بستن -->
+    <div class="d-flex justify-content-end">
+      <button id="closeViewNote" class="btn btn-secondary">بستن</button>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

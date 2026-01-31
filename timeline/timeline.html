@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>زمان‌نگار من</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css" rel="stylesheet">
+  <link rel="stylesheet" href="timeline.css">
+  <script src="timeline.js" defer></script>
+</head>
+<body class="container">
+
+<nav class="navbar custom-navbar">
+  <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+
+    <!-- منوی وسط‌چین -->
+    <ul class="nav custom-menu">
+          <!-- پنل کاربری سمت چپ -->
+    <li class="profile-menu">
+      <a href="../profile/profile.html" class="profile-link">
+        <i class="bi bi-person-circle"></i>
+        <span>پنل کاربری</span>
+      </a>
+    </li>
+      <li class="nav-item"><a class="nav-link active" href="timeline/timeline.html">زمان‌نگار من</a></li>
+      <li class="nav-item"><a class="nav-link " href="../activities/activities.html">مدیریت فعالیت‌ها</a></li>
+      <li class="nav-item"><a class="nav-link" href="../reports/reports.html">آمار و گزارش</a></li>
+      <li class="nav-item"><a class="nav-link" href="../notes/notes.html">یادداشت‌ها</a></li>
+    </ul>
+
+
+  </div>
+</nav>
+
+  <!-- تاریخ -->
+  <div class="date-header d-flex justify-content-center align-items-center gap-3">
+    <button class="btn btn-outline-secondary rounded-circle" onclick="changeDate(-1)">&#x276E;</button>
+    <span id="dateDisplay">امروز، ۱۴۰۴/۰۸/۲۴</span>
+    <button class="btn btn-outline-secondary rounded-circle" onclick="changeDate(1)">&#x276F;</button>
+  </div>
+
+<br>
+
+  <!-- فیلترها -->
+<!-- باکس جدا برای دکمه‌ها، فیلتر و جستجو -->
+<div class="filter-box p-3 mb-4 rounded">
+  <div class="row align-items-start g-3">
+
+    <!-- ستون دکمه‌ها -->
+    <div class="col-md-4 text-start">
+      <!-- دکمه ایجاد فعالیت -->
+      <button class="btn btn-create mb-2" onclick="createActivityOne()"> 
+         <i class="bi bi-plus-circle"></i> ایجاد فعالیت</button>
+     
+      <!-- خط نازک -->
+      <hr class="my-2">
+   
+      <!-- دکمه حذف فعالیت‌ها -->
+      <button class="btn btn-danger" onclick="deleteSelected()">
+           <i class="bi bi-trash"></i> حذف فعالیت 
+      </button>
+    </div>
+
+    <!-- ستون فیلتر -->
+    <div class="col-md-4">
+      <div class="row g-2">
+        <div class="col-12">
+          <label class="form-label">اولویت:</label>
+          <select class="form-select" id="priorityFilter">
+            <option value="">همه</option>
+            <option value="highest">بالاترین</option>
+            <option value="high">بالا</option>
+            <option value="medium">متوسط</option>
+            <option value="low">پایین</option>
+            <option value="minimal">ناچیز</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label">وضعیت:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="doneFilter">
+            <label class="form-check-label" for="doneFilter">کامل‌شده</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="undoneFilter">
+            <label class="form-check-label" for="undoneFilter">ناتمام</label>
+          </div>
+        </div>
+        <!-- دکمه اعمال فیلتر -->
+        <div class="col-12 mt-2">
+          <button class="btn btn-outline-success w-100" onclick="applyFilters()">اعمال فیلترها</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ستون جستجو -->
+    <div class="col-md-4">
+      <label class="form-label">جستجو:</label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="searchInput" placeholder="نام فعالیت...">
+        <button class="btn btn-outline-primary" type="button" onclick="searchActivities()">
+          <i class="bi bi-search"></i> جستجو
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  <!-- لیست فعالیت‌ها -->
+  <div id="activityList">
+    <div class="activity-box">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+          <input type="checkbox" class="form-check-input select-task">
+          <img src="../shared/icons/book.png" width="36" alt="icon">
+          <strong>مطالعه فصل ۳ برنامه‌نویسی</strong>
+        </div>
+        <div class="form-check form-switch done-switch">
+          <input class="form-check-input custom-check" type="checkbox" onchange="enableRating(this)">
+          <label class="form-check-label">انجام شد</label>
+        </div>
+      </div>
+      <div class="mt-2">
+        <span class="text-muted">زمان: ۱۴:۳۰ - ۱۵:۳۰</span> |
+        <span class="priority high">اولویت: بالا</span>
+      </div>
+      <div class="star-rating">
+        <span>امتیاز:</span>
+        <i class="bi bi-star" onclick="rate(this)"></i>
+        <i class="bi bi-star" onclick="rate(this)"></i>
+        <i class="bi bi-star" onclick="rate(this)"></i>
+        <i class="bi bi-star" onclick="rate(this)"></i>
+        <i class="bi bi-star" onclick="rate(this)"></i>
+      </div>
+      <div class="experience-box">
+        <label class="form-label">نوشتن تجربه:</label>
+        <textarea class="form-control" rows="2"></textarea>
+      </div>
+      <div class="text-end mt-2">
+        <button class="btn-edit" onclick="editActivity()">
+           <i class="bi bi-pencil"></i> ویرایش فعالیت
+        </button>
+      </div>
+    </div>
+  </div>
+
+<!-- پنجره ویرایش فعالیت -->
+<!-- پنجره ویرایش فعالیت -->
+<div id="editModal" class="modal-overlay">
+  <div class="modal-content edit-modal">
+
+
+    <h2 class="edit-title">ویرایش فعالیت</h2>
+
+    <div class="edit-row">
+      <div class="edit-box">
+        <label>نام فعالیت:</label>
+        <div>مطالعه فصل ۳ برنامه‌نویسی</div>
+      </div>
+      <div class="edit-box">
+        <label>نام گروه:</label>
+        <div>آموزش فردی</div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="edit-box text-center">
+        <label>آیکون فعلی:</label><br>
+        <img id="currentIcon" src="../shared/icons/book.png" alt="آیکون فعلی" class="activity-icon" onclick="openIconGallery()">
+      </div>
+
+      <div class="edit-box">
+
+        <label>زمان اختصاصی:</label>
+        <div class="form-check form-switch mb-2">
+          <input class="form-check-input" type="checkbox" id="customTimeToggle" onchange="toggleTimeFields()">
+          <label class="form-check-label" for="customTimeToggle">فعال‌سازی</label>
+        </div>
+        <div id="timeFields" style="display:none;">
+          <select class="form-select mb-2" id="timeMode" onchange="switchTimeMode()">
+            <option value="single">زمان خاص</option>
+            <option value="range">بازه زمانی</option>
+          </select>
+          <div id="singleTimeBox" class="mb-2">
+            <input type="time" class="form-control">
+          </div>
+          <div id="rangeTimeBox" class="mb-2" style="display:none;">
+            <div class="d-flex gap-2">
+              <input type="time" class="form-control">
+              <span>تا</span>
+              <input type="time" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="edit-box">
+        <label>اولویت:</label>
+        <div class="priority-circles">
+          <span class="circle minimal" onclick="selectPriority(this)">ناچیز</span>
+          <span class="circle low" onclick="selectPriority(this)">پایین</span>
+          <span class="circle medium selected" onclick="selectPriority(this)">متوسط</span>
+          <span class="circle high" onclick="selectPriority(this)">بالا</span>
+          <span class="circle highest" onclick="selectPriority(this)">بالاترین</span>
+        </div>
+      </div>
+      <div class="edit-box">
+        <label>امتیازدهی:</label>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="ratingToggle">
+          <label class="form-check-label" for="ratingToggle">فعال‌سازی</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-actions">
+      <button class="btn btn-success" onclick="saveActivity()">ذخیره تغییرات</button>
+      <button class="btn btn-outline-secondary" onclick="closeModal()">بستن</button>
+    </div>
+  </div>
+</div>
+
+<!-- مودال گالری آیکون -->
+<div id="iconGalleryModal" class="modal-overlay">
+  <div class="modal-content icon-gallery-modal">
+    <h3 class="edit-title">انتخاب آیکون</h3>
+
+    <div class="icon-gallery">
+      <img src="../shared/icons/book.png" data-icon="../shared/icons/book.png" onclick="selectIcon(this)">
+      <img src="../shared/icons/star.png" data-icon="../shared/icons/star.png" onclick="selectIcon(this)">
+      <img src="../shared/icons/clock.png" data-icon="../shared/icons/clock.png" onclick="selectIcon(this)">
+      <!-- آیکون‌های بیشتر -->
+    </div>
+
+    <div class="edit-actions">
+      <button id="confirmIconBtn" class="btn btn-success" onclick="confirmIcon()" disabled>تأیید</button>
+      <button class="btn btn-outline-secondary" onclick="closeIconGallery()">بستن</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- صفحه ایجاد فعالیت -->
+<!-- مودال ایجاد فعالیت -->
+<!-- مودال ایجاد فعالیت -->
+<div id="newActivityModal" class="modal-overlay">
+  <div class="modal-content wizard-modal">
+    <h2 class="edit-title-common">ایجاد فعالیت جدید </h2>
+
+    <!-- مرحله ۱: انتخاب گروه -->
+    <div class="group-list">
+      <div class="group-box" onclick="selectGroupOne(this)" data-group="تندرستی">
+        <img src="../shared/icons/health.png" alt="آیکون تندرستی">
+        <div class="group-info">
+          <h4>تندرستی</h4>
+          <p>فعالیت‌هایی برای حفظ سلامت جسم و ذهن</p>
+        </div>
+      </div>
+
+      <div class="group-box" onclick="selectGroupOne(this)" data-group="یادگیری">
+        <img src="../shared/icons/learn.png" alt="آیکون یادگیری">
+        <div class="group-info">
+          <h4>یادگیری</h4>
+          <p>مطالعه، تمرین، و رشد مهارت‌های ذهنی</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- مرحله ۲: فعالیت‌های زیرمجموعه -->
+    <div class="activity-list-two" style="display:none;">
+      <h3 class="edit-title-two">انتخاب فعالیت</h3>
+
+      <!-- لیست فعالیت‌ها -->
+      <div id="activitiesContainerTwo" class="activities-container-two">
+        <!-- با JS پر می‌شود -->
+      </div>
+
+      <!-- دکمه‌های مرحله دوم -->
+      <div class="edit-actions-two">
+        <button id="backStepBtnTwo" class="btn btn-outline-secondary" onclick="goBackTwo()">بازگشت</button>
+        <button id="nextStepBtnTwo" class="btn btn-success" onclick="goNextTwo()" disabled>بعدی</button>
+        <button class="btn btn-outline-danger" onclick="closeNewActivityModalCommon()">بستن</button>
+      </div>
+    </div>
+
+    <!-- دکمه‌های مرحله اول -->
+    <div class="edit-actions-one">
+      <button id="nextStepBtnOne" class="btn btn-success" onclick="goNextOne()" disabled>بعدی</button>
+      <button class="btn btn-outline-danger" onclick="closeNewActivityModalCommon()">بستن</button>
+    </div>
+    <!-- مرحله ۳: تنظیمات فعالیت -->
+<div class="activity-settings-three" style="display:none;">
+  <h3 class="edit-title-three">تنظیمات فعالیت</h3>
+
+  <!-- نمایش نام گروه و فعالیت انتخاب‌شده -->
+  <div class="edit-row">
+    <div class="edit-box">
+      <label>نام گروه:</label>
+      <div id="createActivity_groupName">---</div>
+    </div>
+    <div class="edit-box">
+      <label>نام فعالیت:</label>
+      <div id="createActivity_activityName">---</div>
+    </div>
+  </div>
+
+  <!-- انتخاب تاریخ -->
+  <div class="edit-row">
+    <div class="edit-box">
+      <label for="createActivity_date">تاریخ:</label>
+      <input type="date" id="createActivity_date" class="form-control" onchange="createActivity_validateForm()">
+    </div>
+  </div>
+
+  <!-- زمان اختصاصی -->
+  <div class="edit-row">
+    <div class="edit-box">
+      <label>زمان اختصاصی:</label>
+      <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" id="createActivity_customTimeToggle" onchange="createActivity_toggleTimeFields();createActivity_validateForm()">
+        <label class="form-check-label" for="createActivity_customTimeToggle">فعال‌سازی</label>
+      </div>
+      <div id="createActivity_timeFields" style="display:none;">
+        <select class="form-select mb-2" id="createActivity_timeMode" onchange="createActivity_switchTimeMode();createActivity_validateForm()">
+          <option value="single">زمان خاص</option>
+          <option value="range">بازه زمانی</option>
+        </select>
+        <!-- حالت زمان خاص -->
+        <div id="createActivity_singleTimeBox" class="mb-2">
+          <input type="time" id="createActivity_singleTime" class="form-control" onchange="createActivity_validateForm()">
+        </div>
+        <!-- حالت بازه زمانی -->
+        <div id="createActivity_rangeTimeBox" class="mb-2" style="display:none;">
+          <div class="d-flex gap-2">
+            <input type="time" id="createActivity_rangeStart" class="form-control" onchange="createActivity_validateForm()">
+            <span>تا</span>
+            <input type="time" id="createActivity_rangeEnd" class="form-control" onchange="createActivity_validateForm()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- انتخاب اولویت -->
+  <div class="edit-row">
+    <div class="edit-box">
+      <label>اولویت:</label>
+      <div class="priority-circles">
+        <span class="circle minimal" onclick="createActivity_selectPriority(this)">ناچیز</span>
+        <span class="circle low" onclick="createActivity_selectPriority(this)">پایین</span>
+        <span class="circle medium" onclick="createActivity_selectPriority(this)">متوسط</span>
+        <span class="circle high" onclick="createActivity_selectPriority(this)">بالا</span>
+        <span class="circle highest" onclick="createActivity_selectPriority(this)">بالاترین</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- انتخاب آیکون و امتیازدهی -->
+  <div class="edit-row">
+    <div class="edit-box text-center">
+      <label>آیکون:</label><br>
+      <img id="createActivity_iconPreview" src="../shared/icons/placeholder.png" alt="آیکون انتخابی" class="activity-icon" onclick="createActivity_openIconGallery()">
+    </div>
+    <div class="edit-box">
+      <label>امتیازدهی:</label>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="createActivity_ratingToggle">
+        <label class="form-check-label" for="createActivity_ratingToggle">فعال‌سازی</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- دکمه‌های مرحله سوم -->
+  <div class="edit-actions-three">
+    <button class="btn btn-outline-danger" onclick="createActivity_closeModal()">بستن</button>
+    <button class="btn btn-outline-secondary" onclick="createActivity_goBackThree()">بازگشت</button>
+    <button id="createActivity_finishBtn" class="btn btn-success" onclick="createActivity_finish()" disabled>ایجاد فعالیت</button>
+  </div>
+</div>
+  </div>
+</div>
+<!-- مودال گالری آیکون ایجاد فعالیت -->
+<div id="createActivity_iconGalleryModal" class="modal-overlay">
+  <div class="modal-content icon-gallery-modal">
+    <h3 class="edit-title">انتخاب آیکون</h3>
+
+    <div class="icon-gallery">
+      <img src="../shared/icons/book.png" data-icon="../shared/icons/book.png" onclick="createActivity_selectIcon(this)">
+      <img src="../shared/icons/star.png" data-icon="../shared/icons/star.png" onclick="createActivity_selectIcon(this)">
+      <img src="../shared/icons/clock.png" data-icon="../shared/icons/clock.png" onclick="createActivity_selectIcon(this)">
+      <img src="../shared/icons/exercise.png" data-icon="../shared/icons/exercise.png" onclick="createActivity_selectIcon(this)">
+      <img src="../shared/icons/food.png" data-icon="../shared/icons/food.png" onclick="createActivity_selectIcon(this)">
+      <img src="../shared/icons/water.png" data-icon="../shared/icons/water.png" onclick="createActivity_selectIcon(this)">
+      <!-- آیکون‌های بیشتر -->
+    </div>
+
+    <div class="edit-actions">
+      <button id="createActivity_confirmIconBtn" class="btn btn-success" onclick="createActivity_confirmIcon()" disabled>تأیید</button>
+      <button class="btn btn-outline-secondary" onclick="createActivity_closeIconGallery()">بستن</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

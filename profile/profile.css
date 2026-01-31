@@ -1,0 +1,320 @@
+/* profile.css
+   استایل کامل صفحه "پروفایل"
+*/
+
+/* ریشه و متغیرها */
+:root {
+  --bg: #fbfbfd;
+  --card-bg: #ffffff;
+  --muted: #6c757d;
+  --accent: #6f42c1; /* بنفش ملایم */
+  --accent-dark: #4b0082; /* بنفش پررنگ */
+  --danger: #dc3545;
+  --surface-shadow: 0 6px 18px rgba(99,66,155,0.08);
+  --soft-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --gap: 14px;
+  --font-family: "Shabnam", "Vazir", sans-serif;
+}
+
+/* پایه صفحه با گرادیان متحرک */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  color: #222;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: linear-gradient(135deg, #e1f6f9, #f5ebee, #f0f9fa);
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
+}
+
+/* انیمیشن تغییر تدریجی رنگ‌ها */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* منوی فانتزی وسط‌چین */
+.custom-menu {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  width: 90%;
+  max-width: 900px;
+
+  background: linear-gradient(135deg, #ffffff, #f9f6ff);
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(111,66,193,0.15);
+
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* لینک‌های منو */
+.custom-menu .nav-link {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 6px 14px;
+  color: var(--accent);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.custom-menu .nav-link:hover {
+  background: linear-gradient(135deg, #e9e4f0, #dcd0ff);
+  border-color: #d0c1e6;
+  color: var(--accent-dark);
+  transform: translateY(-2px);
+}
+
+.custom-menu .nav-link.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  border-color: var(--accent-dark);
+}
+
+/* کانتینر کلی */
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* فاصله محتوا از منوی ثابت */
+body {
+  padding-top: 80px;
+}
+
+/* قاب اصلی پروفایل */
+.profile-card {
+  background: linear-gradient(145deg, #ffffff, #f9f6ff);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 20px rgba(111,66,193,0.12);
+  padding: 40px;
+  max-width: 680px;
+  margin: 90px auto;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(111,66,193,0.18);
+}
+
+/* تصویر کاربری */
+.profile-image-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 28px;
+}
+.profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid transparent;
+  background: linear-gradient(135deg, #6f42c1, #ff9ff3) border-box;
+  box-shadow: 0 0 12px rgba(111,66,193,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.profile-image:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(111,66,193,0.6);
+}
+
+/* آیکون تغییر تصویر */
+.change-icon {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  background: linear-gradient(135deg, #6f42c1, #9b59b6);
+  color: #fff;
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+.change-icon:hover {
+  background: linear-gradient(135deg, #9b59b6, #6f42c1);
+  transform: rotate(12deg) scale(1.1);
+}
+
+/* باکس‌های اطلاعات */
+.profile-box {
+  margin-bottom: 26px;
+  text-align: right;
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.profile-box:hover {
+  box-shadow: 0 4px 12px rgba(111,66,193,0.15);
+}
+.profile-box label {
+  font-weight: 600;
+  color: var(--accent-dark);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+.profile-box .form-control {
+  border-radius: var(--radius-md);
+  border: 1px solid #ddd;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: #444;
+}
+.profile-box .form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 6px rgba(111,66,193,0.3);
+}
+
+/* دکمه ثبت تغییرات */
+#saveChanges {
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #6f42c1, #9b59b6);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(111,66,193,0.25);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+#saveChanges:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(111,66,193,0.35);
+}
+#saveChanges:disabled {
+  background: #ccc;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* پنجره‌ها */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.modal.active {
+  display: flex;
+}
+.modal-content {
+  background: linear-gradient(145deg, #ffffff, #f9f6ff);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  width: 440px;
+  box-shadow: 0 12px 28px rgba(111,66,193,0.2);
+  text-align: right;
+  animation: scaleFade 0.3s ease;
+}
+@keyframes scaleFade {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* آیکون‌ها */
+.edit-icon, .toggle-eye {
+  cursor: pointer;
+  color: var(--accent-dark);
+  transition: color 0.2s ease;
+}
+.edit-icon:hover, .toggle-eye:hover {
+  color: var(--accent);
+}
+
+/* بخش شرح */
+#bio {
+  resize: vertical;
+  min-height: 120px;
+  border-radius: var(--radius-md);
+  border: 1px solid #ddd;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: #444;
+  padding: 10px;
+  line-height: 1.6;
+  background: #fff;
+}
+#bio:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(111,66,193,0.3);
+}
+
+/* پیام‌های خطا */
+.text-danger {
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+  color: var(--danger);
+}
+
+/* دکمه‌های داخل پنجره‌ها */
+.modal-actions .btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.modal-actions .btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(111,66,193,0.25);
+}
+.modal-actions .btn-secondary {
+  background: #f0f0f0;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+.modal-actions .btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+/* افکت‌های عمومی */
+input:disabled, textarea:disabled {
+  background: #f9f9f9;
+  color: #777;
+  cursor: not-allowed;
+}
+
+/* اسکرول‌بار فانتزی */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}

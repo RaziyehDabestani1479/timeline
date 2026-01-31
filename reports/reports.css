@@ -1,0 +1,287 @@
+/* reports.css
+   استایل کامل صفحه "آمار و گزارش ها "
+*/
+
+/* ریشه و متغیرها */
+:root{
+  --bg: #fbfbfd;
+  --card-bg: #ffffff;
+  --muted: #6c757d;
+  --accent: #6f42c1; /* بنفش ملایم */
+  --accent-dark: #4b0082; /* بنفش پررنگ */
+  --danger: #dc3545;
+  --surface-shadow: 0 6px 18px rgba(99,66,155,0.08);
+  --soft-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --gap: 14px;
+  --font-family: "Shabnam", "Vazir", sans-serif;
+}
+
+/* پایه صفحه */
+/* پایه صفحه با گرادیان متحرک و رنگ‌های لطیف */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  color: #222;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* پس‌زمینه ترکیبی از آبی یخی، صورتی ملایم و بنفش روشن */
+  background: linear-gradient(135deg, #e1f6f9, #f5ebee, #f0f9fa);
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
+}
+
+/* انیمیشن تغییر تدریجی رنگ‌ها */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+
+
+
+/* منوی فانتزی وسط‌چین */
+/* منوی فانتزی وسط‌چین و ثابت در بالا */
+.custom-menu {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  width: 90%;
+  max-width: 900px;
+
+  background: #fff;
+  border-radius: 12px; /* بالا و پایین گرد */
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(13, 13, 14, 0.1);
+
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* لینک‌ها */
+.custom-menu .nav-link {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 6px 14px;
+  color: #6f42c1;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.custom-menu .nav-link:hover {
+  background-color: #e9e4f0;
+  border-color: #d0c1e6;
+  color: #5a379e;
+}
+
+.custom-menu .nav-link.active {
+  background-color: #6f42c1;
+  color: #fff;
+  border-color: #5a379e;
+}
+
+/* کانتینر کلی */
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* فاصله محتوا از منوی ثابت */
+body {
+  padding-top: 70; /* به اندازه ارتفاع منو */
+}
+
+.custom-menu .nav-link {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 6px 14px;
+  color: #6f42c1;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.custom-menu .nav-link:hover {
+  background-color: #e9e4f0;
+  border-color: #d0c1e6;
+  color: #5a379e;
+}
+
+.custom-menu .nav-link.active {
+  background-color: #6f42c1;
+  color: #fff;
+  border-color: #5a379e;
+}
+
+/* دکمه‌های تاریخ: پیش‌فرض یاسی، هاور و کلیک بنفش پررنگ */
+.date-header .btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform .15s ease, background .15s ease, color .15s ease, box-shadow .15s ease;
+  background: #f3e8ff; /* یاسی کم‌رنگ */
+  color: #5a379e;      /* متن یاسی تیره‌تر */
+  border: 1px solid rgba(111,66,193,0.08);
+  box-shadow: 0 2px 6px rgba(111,66,193,0.04);
+}
+
+/* هاور: بنفش پررنگ */
+.date-header .btn:hover {
+  transform: translateY(-2px);
+  background: #6f42c1; /* بنفش پررنگ */
+  color: #fff;
+  border-color: #5a379e;
+  box-shadow: 0 8px 20px rgba(111,66,193,0.18);
+}
+
+/* حالت فعال (فشار لحظه‌ای) */
+.date-header .btn:active {
+  transform: translateY(0);
+  background: #4b0082; /* بنفش تیره‌تر هنگام کلیک */
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(75,0,130,0.22);
+}
+
+/* حالت فوکوس برای دسترسی صفحه‌کلید */
+.date-header .btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(111,66,193,0.12);
+}
+
+/* -------------------------------
+   بخش آمار روزانه / هفتگی / ماهانه
+---------------------------------*/
+
+/* فاصله بالای هر بخش آماری */
+.daily-stats,
+.weekly-stats,
+.monthly-stats {
+  margin-top: 24px;
+}
+
+/* تب‌های انتخاب نوع نمودار (امتیاز / تکمیل) */
+.nav-pills .nav-link {
+  border-radius: var(--radius-md); /* گوشه‌های گرد */
+  font-weight: 500;                /* ضخامت فونت */
+  color: var(--accent-dark);       /* رنگ متن */
+  background-color: #f8f9fa;       /* رنگ پس‌زمینه */
+  margin-left: 6px;                /* فاصله بین تب‌ها */
+  transition: all 0.2s ease;       /* انیمیشن تغییر رنگ */
+}
+
+/* حالت فعال تب‌ها */
+.nav-pills .nav-link.active {
+  background-color: var(--accent); /* رنگ اصلی */
+  color: #fff;                     /* متن سفید */
+}
+
+/* کارت مستقل برای هر نمودار */
+.chart-card {
+  background: var(--card-bg);      /* رنگ پس‌زمینه کارت */
+  border-radius: var(--radius-md); /* گوشه‌های گرد */
+  box-shadow: var(--soft-shadow);  /* سایه نرم */
+  padding: 16px;                   /* فاصله داخلی */
+  margin-bottom: var(--gap);       /* فاصله پایین کارت */
+}
+
+/* عنوان نمودار داخل کارت */
+.chart-card h5 {
+  margin-bottom: 12px;
+  color: var(--accent-dark);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* خود نمودار (canvas) */
+.chart-card canvas {
+  width: 100% !important;
+  height: 240px !important; /* ارتفاع کنترل‌شده */
+}
+
+/* بخش خلاصه آمار پایین نمودار */
+.summary-fancy {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* کارت‌های خلاصه (امتیاز / تکمیل) */
+.summary-card {
+  flex: 1;
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #badee2, #ccefff); /* گرادیان مشترک */
+  border-radius: var(--radius-md);
+  box-shadow: var(--surface-shadow);
+  padding: 12px 16px;
+  transition: transform 0.2s ease;
+}
+
+/* افکت هاور کارت‌ها */
+.summary-card:hover {
+  transform: translateY(-2px);
+}
+
+/* آیکون داخل کارت */
+.summary-card i {
+  font-size: 24px;
+  color: var(--accent-dark);
+}
+
+/* متن داخل کارت */
+.summary-card .text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* برچسب کارت */
+.summary-card .label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* مقدار کارت */
+.summary-card .value {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--accent-dark);
+}
+
+
+/* اسکرول‌بار فانتزی */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dark);
+}

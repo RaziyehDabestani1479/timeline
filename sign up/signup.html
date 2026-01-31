@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت نام - مدیریت زمان و برنامه‌ریزی</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="background-elements">
+            <div class="bubble bubble1"></div>
+            <div class="bubble bubble2"></div>
+            <div class="bubble bubble3"></div>
+            <div class="bubble bubble4"></div>
+            <div class="bubble bubble5"></div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h1>ایجاد حساب کاربری</h1>
+                <p>برای مدیریت بهتر زمان خود ثبت نام کنید</p>
+            </div>
+            
+            <form class="form" id="signupForm">
+                <div class="input-group">
+                    <input type="text" id="fullname" required>
+                    <label for="fullname">نام کامل</label>
+                </div>
+                
+                <div class="input-group">
+                    <input type="email" id="email" required>
+                    <label for="email">ایمیل</label>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" required>
+                    <label for="password">رمز عبور</label>
+                    <button type="button" class="toggle-password">👁️</button>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" required>
+                    <label for="confirmPassword">تکرار رمز عبور</label>
+                </div>
+                
+                <button type="submit" class="submit-btn">ثبت نام</button>
+                
+                <div class="login-link">
+                    قبلاً حساب کاربری دارید؟ <a href="#">وارد شوید</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="signup.js"></script>
+</body>
+</html>
